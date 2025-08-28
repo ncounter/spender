@@ -83,7 +83,7 @@ export function App() {
 
   return (
     <div class="container mt-5">
-      <h1 class="mb-4">Expense Tracker</h1>
+      <h1 class="mb-4">Spender</h1>
       <div class="row">
         <div class="col-md-6">
           <div class="card">
