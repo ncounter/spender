@@ -1,0 +1,26 @@
+{
+  "expenses": [
+    {
+      "name": "Coffee",
+      "amount": 3.5,
+      "date": "2025-08-28"
+    },
+    {
+      "name": "Lunch",
+      "amount": 15,
+      "date": "2025-08-28"
+    }
+  ],
+  "recurrentExpenses": [
+    {
+      "name": "Rent",
+      "amount": 1200,
+      "frequency": "monthly"
+    },
+    {
+      "name": "Netflix",
+      "amount": 15.99,
+      "frequency": "monthly"
+    }
+  ]
+}

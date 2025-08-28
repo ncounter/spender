@@ -1,15 +1,54 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { AddExpenseForm } from './components/AddExpenseForm';
 import { ExpenseList } from './components/ExpenseList';
 import { RecurrentExpensesForm } from './components/RecurrentExpensesForm';
 import { RecurrentExpensesList } from './components/RecurrentExpensesList';
+
+const API_URL = 'http://localhost:3001/api/expenses';
 
 export function App() {
   const [expenses, setExpenses] = useState([]);
   const [recurrentExpenses, setRecurrentExpenses] = useState([]);
   const [editingExpense, setEditingExpense] = useState(null);
   const [editingRecurrentExpense, setEditingRecurrentExpense] = useState(null);
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setExpenses(data.expenses || []);
+        setRecurrentExpenses(data.recurrentExpenses || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const saveData = async () => {
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expenses, recurrentExpenses }),
+        });
+      } catch (error) {
+        console.error('Error saving data:', error);
+      }
+    };
+    saveData();
+  }, [expenses, recurrentExpenses]);
 
   const addExpense = (expense) => {
     if (editingExpense) {
@@ -40,8 +79,6 @@ export function App() {
   const deleteExpense = (expenseToDelete) => {
     setExpenses(expenses.filter((expense) => expense !== expenseToDelete));
   };
-
-  
 
 
   return (
